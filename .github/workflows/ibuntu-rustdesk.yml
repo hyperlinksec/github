@@ -1,0 +1,39 @@
+name: Ubuntu-rustdesk
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Start Building...
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update and Install Essentials
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y wget curl python3-pip
+
+      - name: Downloading & Installing RustDesk
+        run: |
+          wget https://github.com/rustdesk/rustdesk/releases/download/v1.1.9/rustdesk-1.1.9-ubuntu_amd64.deb
+          sudo apt install -y ./rustdesk-1.1.9-ubuntu_amd64.deb
+
+      - name: Install Desktop Environment (XFCE)
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xfce4 xfce4-goodies
+          sudo apt-get install -y dbus-x11
+
+      - name: Configure RustDesk Session
+        run: |
+          echo "exec /usr/bin/xfce4-session" | sudo tee /etc/rustdesk-session
+
+      - name: Start RustDesk
+        run: |
+          rustdesk --service
+
+      - name: Verify RustDesk Service
+        run: |
+          ps aux | grep rustdesk
+
+      - name: Time Counter
+        run: python3 time.py
