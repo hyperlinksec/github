@@ -15,8 +15,8 @@ jobs:
 
       - name: Downloading & Installing RustDesk
         run: |
-          wget https://github.com/rustdesk/rustdesk/releases/download/v1.1.9/rustdesk-1.1.9-ubuntu_amd64.deb
-          sudo apt install -y ./rustdesk-1.1.9-ubuntu_amd64.deb
+          wget https://github.com/rustdesk/rustdesk/releases/download/1.3.6/rustdesk-1.3.6-x86_64.deb
+          sudo apt install -y ./rustdesk-1.3.6-x86_64.deb
 
       - name: Install Desktop Environment (XFCE)
         run: |
