@@ -15,17 +15,14 @@ jobs:
 
       - name: Downloading & Installing RustDesk
         run: |
-          wget https://github.com/rustdesk/rustdesk/releases/download/1.3.6/rustdesk-1.3.6-x86_64.deb
-          sudo apt install -y ./rustdesk-1.3.6-x86_64.deb
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/rustdesk/rustdesk/releases/latest | grep "tag_name" | cut -d '"' -f 4)
+          wget https://github.com/rustdesk/rustdesk/releases/download/$LATEST_VERSION/rustdesk-${LATEST_VERSION#v}-ubuntu_amd64.deb
+          sudo apt install -y ./rustdesk-${LATEST_VERSION#v}-ubuntu_amd64.deb
 
       - name: Install Desktop Environment (XFCE)
         run: |
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xfce4 xfce4-goodies
           sudo apt-get install -y dbus-x11
-
-      - name: Configure RustDesk Session
-        run: |
-          echo "exec /usr/bin/xfce4-session" | sudo tee /etc/rustdesk-session
 
       - name: Start RustDesk
         run: |
