@@ -60,5 +60,10 @@ jobs:
       - name: Verify Chrome Remote Desktop Service
         run: sudo systemctl status chrome-remote-desktop.service
 
-      - name: Time Counter
+      - name: Create a continuous time.py file
+        run: |
+          echo 'while True:' > time.py
+          echo '    print("Running...")' >> time.py
+
+      - name: Run the time.py script
         run: python3 time.py
