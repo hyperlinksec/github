@@ -1,4 +1,4 @@
-name: Ubuntu-google
+name: Ubuntu-google-Remote-Desktop
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
       - name: Update and Install Essentials
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y wget curl python3-pip
+          sudo apt-get install -y wget curl python3-pip expect
 
       - name: Downloading & Installing Google Chrome
         run: |
@@ -47,10 +47,15 @@ jobs:
         run: |
           echo "exec /usr/bin/xfce4-session" | sudo tee /etc/chrome-remote-desktop-session
 
-      - name: Configure Google Remote Desktop
+      - name: Configure Google Remote Desktop with PIN
         run: |
-          "/opt/google/chrome-remote-desktop/start-host" --code="4/0AanRRrsU_IlUmBukNSXEdIZq1G4x8V6EAM-RJGnansL8S-0rcrolhLlwARDZUGWS1Rcnxw" \
-          --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname)
+          # Using expect to automate PIN input
+          sudo apt-get install -y expect
+          expect <<EOF
+          spawn /opt/google/chrome-remote-desktop/start-host --code="4/0AanRRrsU_IlUmBukNSXEdIZq1G4x8V6EAM-RJGnansL8S-0rcrolhLlwARDZUGWS1Rcnxw" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname)
+          expect "Enter a PIN of at least six digits:" { send "123465\r" }
+          expect eof
+          EOF
 
       - name: Verify Chrome Remote Desktop Service
         run: sudo systemctl status chrome-remote-desktop.service
