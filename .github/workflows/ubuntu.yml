@@ -1,4 +1,4 @@
-name: programmingwithgit
+name: Ubuntu-google
 
 on:
   workflow_dispatch:
