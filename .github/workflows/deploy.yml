@@ -1,4 +1,4 @@
-name: programmingwithgit
+name: Windows10-RustDesk
 
 on:
   workflow_dispatch:
